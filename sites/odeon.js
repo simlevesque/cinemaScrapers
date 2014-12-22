@@ -2,7 +2,7 @@ var phantom = require("phantom"),
 	debutAdresse = "http://www.cineplex.com/Showtimes/any-movie/", 
 	pages = ["cinema-cineplex-odeon-quartier-latin", "cinema-banque-scotia-montreal", "cinema-cineplex-forum", "cinema-starcite-montreal", "cinema-famous-players-carrefour-angrignon", "cinema-cineplex-odeon-cavendish-mall", "cinema-cineplex-odeon-boucherville", "cinema-cineplex-odeon-place-la-salle", "cinema-cineplex-odeon-brossard-et-cinema-vip", "cinema-cineplex-odeon-stbruno", "cinema-cineplex-odeon-delson", "cinema-colossus-laval"],
 	shifting = pages;
-	console.log(pages.length)
+	
 phantom.create(function(ph){
 	ph.createPage(function (page) {
 		function handleOpen(item){
@@ -50,8 +50,8 @@ phantom.create(function(ph){
 					
 					return cinema; 
 				}, function (result) {
-					console.log("bob,", result);
-					setTimeout(nextOpen,1500)
+					console.log(result);
+					setTimeout(nextOpen,1000)
 				});
 			});
 		}
