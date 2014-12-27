@@ -57,7 +57,7 @@ odeon.start = function(){
 								name = result.name;
 							if(lang === "bi"){
 								detectLang(name, mov, function(cinema, movie, language){
-									console.log(cinema + " : " + movie + ' is [' + language + ']');
+									//console.log(cinema + " : " + movie + ' is [' + language + ']');
 									//console.log(j + " - " + result.films.length);
 									j++;
 									if(j===result.films.length){
@@ -66,10 +66,10 @@ odeon.start = function(){
 								});
 							} else {
 								if(lang === "fr"){
-									console.log(mov + ' is [' + verifyFrench(mov) + ']');
+									//console.log(mov + ' is [' + verifyFrench(mov) + ']');
 								}
 								if(lang === "en"){
-									console.log(mov + ' is [' + verifyEnglish(mov) + ']');
+									//console.log(mov + ' is [' + verifyEnglish(mov) + ']');
 								}
 								//console.log(j + " - " + result.films.length);
 								j++;

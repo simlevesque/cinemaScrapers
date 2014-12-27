@@ -1,5 +1,6 @@
 var odeon = require("./sites/odeon"),
 	guzzo = require("./sites/guzzo"),
+	indie = require("./sites/indie"),
 	allocine = require('allocine-api'),
 	omdb = require('omdb'),
 	fs = require('fs'),
@@ -23,16 +24,17 @@ guzzo.on("update", function(result, nb){
 	if(Object.keys(results.guzzo).length === nb) scrapingEnd()
 });
 
-odeon.start();
-//guzzo.start();
+//odeon.start();
+guzzo.start();
 
 function scrapingEnd(){
 	nbScraper++;
-	/*if(nbScraper === everyScraper){
+	if(nbScraper === 1){
 		fs.writeFile('result.json', JSON.stringify(results), function (err) {
 		  if (err) return console.log(err);
+		  console.log(results.guzzo["Mega-Plex Deux-Montagnes 14 (IMAX)"].films);
 		  console.log('done !');
 		  process.exit(0);
 		});
-	}*/
+	}
 }
