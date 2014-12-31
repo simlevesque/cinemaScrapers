@@ -4,7 +4,8 @@ var phantom = require("phantom"),
 	pages = ["1-cinemas-schedules-mega-plex-taschereau-18-imax-", "12-cinemas-schedules-mega-plex-marche-central-18-imax-", "2-cinemas-schedules-mega-plex-pont-viau-16-imax-", "6-cinemas-schedules-mega-plex-lacordaire-16", "3-cinemas-schedules-mega-plex-jacques-cartier-14", "4-cinemas-schedules-mega-plex-spheretech-14", "5-cinemas-schedules-mega-plex-terrebonne-14-imax-", "11-cinemas-schedules-mega-plex-deux-montagnes-14-imax-", "7-cinemas-schedules-cinema-des-sources-imax-", "8-cinemas-schedules-cinema-sainte-therese-8"],
 	shifting = pages.slice(0),
 	guzzo = new EventEmitter();
-	
+
+guzzo.length = pages.length;
 guzzo.start = function(){
 	phantom.create(function(ph){
 		ph.createPage(function (page) {
@@ -66,7 +67,7 @@ guzzo.start = function(){
 						
 						return cinema; 
 					}, function (result) {
-						guzzo.emit("update",  result, pages.length);
+						guzzo.emit("update",  result);
 						setTimeout(nextOpen,1000)
 					});
 				});

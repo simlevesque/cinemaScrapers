@@ -4,36 +4,42 @@ var odeon = require("./sites/odeon"),
 	allocine = require('allocine-api'),
 	omdb = require('omdb'),
 	fs = require('fs'),
-	results = {guzzo:{},odeon:{}},
+	results = {guzzo:{},odeon:{},indie:{}},
 	quickResults = function(){
-		var quick = {guzzo:{},odeon:{}};
-		quick.guzzo = Object.keys(results.guzzo);
-		quick.odeon = Object.keys(results.odeon);
+		var quick = {};
+		quick.guzzo = Object.keys(results.guzzo).length + "/" + guzzo.length;
+		quick.odeon = Object.keys(results.odeon).length + "/" + odeon.length;
+		quick.indie = Object.keys(results.indie).length + "/" + indie.length;
+		quick.length = odeon.length + guzzo.length + indie.length;
 		return quick;
 	},
 	nbScraper = 0
 	everyScraper = 2;
 
-odeon.on("update", function(result, nb){
+odeon.on("update", function(result){
 	results.odeon[result.name] = result;
-	if(Object.keys(results.odeon).length === nb) scrapingEnd()
+	if(Object.keys(results.odeon).length === odeon.length) scrapingEnd()
 });
 
-guzzo.on("update", function(result, nb){
+guzzo.on("update", function(result){
 	results.guzzo[result.name] = result;
-	if(Object.keys(results.guzzo).length === nb) scrapingEnd()
+	if(Object.keys(results.guzzo).length === guzzo.length) scrapingEnd()
 });
 
-//odeon.start();
+indie.on("update", function(result){
+	results.indie[result.name] = result;
+	if(Object.keys(results.indie).length === indie.length) scrapingEnd()
+});
+
+odeon.start();
 guzzo.start();
+indie.start();
 
 function scrapingEnd(){
 	nbScraper++;
-	if(nbScraper === 1){
+	if(nbScraper === 3){
 		fs.writeFile('result.json', JSON.stringify(results), function (err) {
 		  if (err) return console.log(err);
-		  console.log(results.guzzo["Mega-Plex Deux-Montagnes 14 (IMAX)"].films);
-		  console.log('done !');
 		  process.exit(0);
 		});
 	}

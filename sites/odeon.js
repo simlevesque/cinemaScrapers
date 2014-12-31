@@ -6,6 +6,7 @@ var phantom = require("phantom"),
 	shifting = pages.slice(0),
 	odeon = new EventEmitter();
 	
+	odeon.length = pages.length;
 odeon.start = function(){
 	phantom.create(function(ph){
 		ph.createPage(function (page) {
@@ -78,7 +79,7 @@ odeon.start = function(){
 								}
 							}
 						}
-						odeon.emit("update",  result, pages.length);
+						odeon.emit("update",  result);
 						setTimeout(nextOpen,1000)
 					});
 			});
