@@ -27,5 +27,7 @@ imaxtelus.js = function(){
 	_cinema.adress = _cinemaAdress;
 	return _cinema;
 }
+
 imaxtelus.liens = ["http://www.centredessciencesdemontreal.com/imax-telus/cinema-imax-telus.html", imaxtelus.js, "fr"];
+
 module.exports = imaxtelus;

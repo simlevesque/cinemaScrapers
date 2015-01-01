@@ -68,5 +68,7 @@ beaubien.js = function(){
 	cinema.adress = _adress
 	return cinema;
 }
+
 beaubien.liens = ["http://cinemabeaubien.com/fr/alaffiche.aspx", beaubien.js, "fr"];
+
 module.exports = beaubien;

@@ -17,16 +17,19 @@ var odeon = require("./sites/odeon"),
 	everyScraper = 2;
 
 odeon.on("update", function(result){
+	onUpdate();
 	results.odeon[result.name] = result;
 	if(Object.keys(results.odeon).length === odeon.length) scrapingEnd()
 });
 
 guzzo.on("update", function(result){
+	onUpdate();
 	results.guzzo[result.name] = result;
 	if(Object.keys(results.guzzo).length === guzzo.length) scrapingEnd()
 });
 
 indie.on("update", function(result){
+	onUpdate();
 	results.indie[result.name] = result;
 	if(Object.keys(results.indie).length === indie.length) scrapingEnd()
 });
@@ -43,4 +46,8 @@ function scrapingEnd(){
 		  process.exit(0);
 		});
 	}
+}
+
+function onUpdate(){
+	console.log(quickResults());
 }
