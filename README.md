@@ -35,7 +35,7 @@ supporte presentement 24 cinemas :)
     - 01 Cinéma Beaubien
     - 02 IMAX Télus
     - 03 Cinéstarz Langelier
-    - 03 Cinéstarz Côte-Des-Neiges
+    - 04 Cinéstarz Côte-Des-Neiges
 
 dependencies : 
 guesslanguage, allocine-api, omdb, cookie-jar, qs, oauth-sign, aws-sign, hawk, http-signature, node-uuid, mime, tunnel-agent, json-stringify-safe, forever-agent, form-data
