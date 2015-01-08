@@ -17,21 +17,21 @@ var odeon = require("./sites/odeon"),
 	everyScraper = 2;
 
 odeon.on("update", function(result){
-	onUpdate();
 	results.odeon[result.name] = result;
 	if(Object.keys(results.odeon).length === odeon.length) scrapingEnd()
+	onUpdate();
 });
 
 guzzo.on("update", function(result){
-	onUpdate();
 	results.guzzo[result.name] = result;
 	if(Object.keys(results.guzzo).length === guzzo.length) scrapingEnd()
+	onUpdate();
 });
 
 indie.on("update", function(result){
-	onUpdate();
 	results.indie[result.name] = result;
 	if(Object.keys(results.indie).length === indie.length) scrapingEnd()
+	onUpdate();
 });
 
 odeon.start();

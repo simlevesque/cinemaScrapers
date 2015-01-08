@@ -2,6 +2,7 @@ var phantom = require("phantom"),
 	beaubien = require("./beaubien.js"),
 	imaxtelus = require("./imaxtelus.js"),
 	cinestarz = require("./cinestarz.js"),
+	duparc = require("./duparc.js"),
 	EventEmitter = require('events').EventEmitter,
 	pages = [],
 	
@@ -11,6 +12,7 @@ var phantom = require("phantom"),
 	pages.push(imaxtelus.liens);
 	pages.push(cinestarz.liens1);
 	pages.push(cinestarz.liens2);
+	pages.push(duparc.liens);
 	
 	shifting = pages.slice(0);
 	indie.length = pages.length;

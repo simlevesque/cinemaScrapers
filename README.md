@@ -3,7 +3,7 @@ cinemaScrapers
 
 from websites to a REST API
 
-supporte presentement 24 cinemas :)
+supporte presentement 27 cinemas :)
 
 - Guzzo
     - 01 Mega-Plex Taschereau 18 (IMAX)
@@ -36,6 +36,7 @@ supporte presentement 24 cinemas :)
     - 02 IMAX Télus
     - 03 Cinéstarz Langelier
     - 04 Cinéstarz Côte-Des-Neiges
+    - 05 Cinéma du Parc
 
 dependencies : 
 guesslanguage, allocine-api, omdb, cookie-jar, qs, oauth-sign, aws-sign, hawk, http-signature, node-uuid, mime, tunnel-agent, json-stringify-safe, forever-agent, form-data
