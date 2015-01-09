@@ -13,21 +13,29 @@ guzzo.start = function(){
 				var openIt = debutAdresse + item + ".html";
 				page.open(openIt, function (status) {
 					page.evaluate(function () {
-						var _nomDuCinema = document.getElementsByTagName("H1")[0].textContent
-							_adresseDuCinema = document.getElementsByTagName("strong")[0].textContent;
+
+						var _nomDuCinema = document.getElementsByTagName("H1")[0].textContent,
+							_adresseDuCinema = document.getElementsByTagName("strong")[0].textContent,
 							filmsDom = document.getElementsByClassName("listing"),
-							_films = [];
-							
+							_films = [],
+							monthAndDates = getMonthAndDates(),
+							_month = monthAndDates[0],
+							_days = monthAndDates[1],
+								_shows = {en: {},fr: {}},
+								_cinema;
+
 							//determine language	
-						
 						for(var i = 0;i<filmsDom.length;i++){
 							var filmDom = filmsDom[i],
+								filmHours = filmDom.children[1].children,
 								h2 = filmDom.children[1].children[0].children.length,
 								filmInfo = filmDom.children[1].children[0],
 								nom = filmInfo.children[0].textContent.replace(/\s+/g,' ').trim(),
 								shows = {},
+								dates = [],
+								times = [],
 								lang;
-								
+
 							if(h2 === 3){
 								var txt = filmDom.children[1].children[0].children[2].textContent;
 									eng = txt.indexOf("eng"),
@@ -41,31 +49,98 @@ guzzo.start = function(){
 							} else if (h2 === 1){
 								lang = ["en", "fr"];
 							}
-							/*
-							for(var j = 1;j<filmHours.children.length;j++){
-								var typeDom = filmHours.children[j],
-									typeText = typeDom.children[0].children[0].title,
-									typeTimes = typeDom.children[1].children[0],
-									times = [];
-									
-								for(var k = 0;k<typeTimes.children.length;k++){
-									var timeDom = typeTimes.children[k],
-										timeText = timeDom.children[0].innerHTML.replace(/\s+/g,' ').trim();
-									
-									times.push(timeText);
+							
+							for(var j = 1;j<filmHours.length;j++){
+								if(filmHours[j].tagName === "P" ){
+									var typeDom = filmHours[j],
+											txt = typeDom.textContent.replace(/\s+/g,' ').trim(),
+											date = isNaN(txt.charAt(0));
+									if(txt.indexOf("French") === -1){
+										if(date) dates.push(txt);
+										else times.push(txt);
+									} else {
+										dates.push("switch");
+										times.push("switch");
+									}
 								}
-								
-								shows[typeText] = times;
 							}
-							*/
-							var film = {name: nom, langue: lang};
+							
+							var curLang = lang[0];
+							for(var j = 0;j<dates.length;j++){
+								if(lang.length === 2 && dates[j] === "switch"){
+										curLang = lang[1];
+								}else if(dates[j] === "switch"){
+															
+								} else {
+									var dat = dates[j].split(", ");
+										
+									var tim = times[j];
 								
+									for(var k = 0;k<dat.length;k++){
+											var realDate = getDate(dat[k]);
+										if(realDate !== "everyday") {
+											createFilm(nom, curLang, realDate, tim);
+										} else {
+											var days = ['Friday','Saturday','Sunday','Monday','Tuesday','Wednesday','Thursday'];
+											for(var l = 0;l<days.length;l++){
+												createFilm(nom, curLang, getDate(days[l]), tim);
+											}
+										}
+									}
+								}
+							}
+							
+							var film = {name: nom, langue: lang, shows: shows};
+
 							_films.push(film);
 						}
-						
-						var cinema = {name:_nomDuCinema,adress:_adresseDuCinema, films:_films};
-						
-						return cinema; 
+
+						var _cinema = {name:_nomDuCinema,adress:_adresseDuCinema, shows:_shows};
+						return _cinema;
+
+						function getDate(day){
+							var days = ['Friday','Saturday','Sunday','Monday','Tuesday','Wednesday','Thursday'];
+							for(var i = 0;i < days.length;i++){
+								var thatDay = days[i];
+								if(day.indexOf(thatDay) !== -1){
+									return _days[i] + " " + _month;
+								}
+							}
+							if(day.indexOf("Every") !== -1) return "everyday";
+						}
+
+						function getMonthAndDates(){
+							//Get _Month
+							var raw = document.getElementsByClassName("actif")[1].textContent.replace(/\s+/g,' ').trim(),
+								months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+								month;
+							
+							for(var i = 0;i < months.length;i++){
+								if(raw.indexOf(months[i]) !== -1){
+									month = months[i];
+								}
+							}
+
+							var limits = raw.match(/(\d+)/gi),
+								diff = limits[1] - limits[0] + 1,
+								days = [];
+							
+							for(var k = 0; k<diff; k++){
+								days.push((k + parseInt(limits[0])));
+							}
+
+							return [month, days];
+						}
+
+						function createFilm(name, lang, date, time){
+							var _film = {};
+							_film.time = time;
+							_film.name = name;
+							if(typeof _shows[lang][date] === "undefined"){
+								_shows[lang][date] = [];
+							}
+							_shows[lang][date].push(_film);
+						}
 					}, function (result) {
 						guzzo.emit("update",  result);
 						setTimeout(nextOpen,1000)

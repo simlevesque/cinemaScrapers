@@ -23,9 +23,8 @@ duparc.js = function(){
 				_dates = [];
 				
 			for(var j = 0;j<dates.length;j++){
-				if(dates[j].nodeName = "#text" && dates[j].textContent.replace(/\s+/g,' ').trim() !== "" && (typeof dates[j].children === "undefined" || dates[j].children.length === 0)){
-					var node = dates[j].textContent.replace(/\s+/g,' ').trim();
-					
+				var node = dates[j].textContent.replace(/\s+/g,' ').trim();
+				if(dates[j].nodeName = "#text" && node !== "" && (typeof dates[j].children === "undefined" || dates[j].children.length === 0)){					
 					if(isNaN(parseInt(node.charAt()))){
 						_dates.push(node);
 					} else {

@@ -16,69 +16,44 @@ odeon.start = function(){
 				page.open(openIt, function (status) {
 					page.evaluate(function () {
 						var _nomDuCinema = document.getElementsByClassName("theatre-text")[0].textContent.replace(/\s+/g,' ').trim(),
-							_adresseDuCinema = document.getElementsByClassName("theatre-address")[0].textContent.replace(/\s+/g,' ').trim();
-							filmsDom = document.getElementsByClassName("showtime-card"),
-							_films = [];
-
+							  _adresseDuCinema = document.getElementsByClassName("theatre-address")[0].textContent.replace(/\s+/g,' ').trim();
+							  filmsDom = document.getElementsByClassName("showtime-card"),
+						  	_films = [],
+								_shows = {},
+								currentDate = document.getElementsByClassName("ticket-date")[0].textContent + " " + document.getElementsByClassName("ticket-month")[0].textContent;
+						
+						_shows[currentDate] = [];
+						
 						for(var i = 0;i<filmsDom.length;i++){
 							var filmDom = filmsDom[i],
-								filmInfo = filmDom.children[0].children[1],
-								filmHours = filmDom.children[1].children[0],
-								nom = filmInfo.children[0].children[0].textContent.replace(/\s+/g,' ').trim(),
-								shows = {};
+							  	filmInfo = filmDom.children[0].children[1],
+							  	filmHours = filmDom.children[1].children[0],
+							  	nom = filmInfo.children[0].children[0].textContent.replace(/\s+/g,' ').trim(),
+							  	shows = [];
 							
 							for(var j = 1;j<filmHours.children.length;j++){
 								var typeDom = filmHours.children[j],
-									typeText = typeDom.children[0].children[0].title,
-									typeTimes = typeDom.children[1].children[0],
-									times = [];
+								  	typeText = typeDom.children[0].children[0].title,
+								  	typeTimes = typeDom.children[1].children[0];
 									
 								for(var k = 0;k<typeTimes.children.length;k++){
 									var timeDom = typeTimes.children[k],
-										timeText = timeDom.children[0].innerHTML.replace(/\s+/g,' ').trim();
-									
-									times.push(timeText);
+								  		timeText = timeDom.children[0].innerHTML.replace(/\s+/g,' ').trim() + " ( " + typeText + " )";
+
+									shows.push(timeText);
 								}
-								
-								shows[typeText] = times;
 							}
-							
-							var film = {name: nom, showtime: shows};
+							var film = {name: nom, time: shows};
 								
-							_films.push(film);
+							_shows[currentDate].push(film);
 						}
 						
-						var cinema = {name:_nomDuCinema,adress:_adresseDuCinema, films:_films};
+						var cinema = {name:_nomDuCinema,adress:_adresseDuCinema, shows:_shows};
 						
-						return cinema; 
+						return cinema;
 					}, function (result) {
 						
-						for(var i=0, j=0;i<result.films.length;i++){
-							var mov = result.films[i].name.toLowerCase(),
-								name = result.name;
-							if(lang === "bi"){
-								detectLang(name, mov, function(cinema, movie, language){
-									//console.log(cinema + " : " + movie + ' is [' + language + ']');
-									//console.log(j + " - " + result.films.length);
-									j++;
-									if(j===result.films.length){
-										//console.log("doooone");
-									}
-								});
-							} else {
-								if(lang === "fr"){
-									//console.log(mov + ' is [' + verifyFrench(mov) + ']');
-								}
-								if(lang === "en"){
-									//console.log(mov + ' is [' + verifyEnglish(mov) + ']');
-								}
-								//console.log(j + " - " + result.films.length);
-								j++;
-								if(j===result.films.length){
-									//console.log("doooone");
-								}
-							}
-						}
+						
 						odeon.emit("update",  result);
 						setTimeout(nextOpen,1000)
 					});

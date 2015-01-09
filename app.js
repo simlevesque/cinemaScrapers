@@ -5,6 +5,7 @@ var odeon = require("./sites/odeon"),
 	omdb = require('omdb'),
 	fs = require('fs'),
 	results = {guzzo:{},odeon:{},indie:{}},
+	concrete = {en:{},fr:{}};
 	quickResults = function(){
 		var quick = {};
 		quick.guzzo = Object.keys(results.guzzo).length + "/" + guzzo.length;
@@ -35,14 +36,15 @@ indie.on("update", function(result){
 });
 
 odeon.start();
-guzzo.start();
-indie.start();
+//guzzo.start();
+//indie.start();
 
 function scrapingEnd(){
 	nbScraper++;
-	if(nbScraper === 3){
+	if(nbScraper === 1){
 		fs.writeFile('result.json', JSON.stringify(results), function (err) {
 		  if (err) return console.log(err);
+		  console.log("done !");
 		  process.exit(0);
 		});
 	}
