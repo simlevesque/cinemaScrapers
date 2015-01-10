@@ -53,6 +53,12 @@ odeon.start = function(){
 						return cinema;
 					}, function (result) {
 						
+						var today = Object.keys(result.shows)[0],
+							todayShows = result.shows[today];
+						
+						for(var i = 0;i<todayShows.length;i++){
+							console.log(todayShows[i]);
+						}
 						
 						odeon.emit("update",  result);
 						setTimeout(nextOpen,1000)

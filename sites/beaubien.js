@@ -2,9 +2,11 @@ var beaubien = {};
 
 beaubien.js = function(){
 	var films = document.getElementsByClassName("unFilm"),
+var films = document.getElementsByClassName("unFilm"),
 		cinema = {name:"beaubien"},
 		_films = [],
-		_adress = "2396, rue Beaubien Est, Montréal";
+		_adress = "2396, rue Beaubien Est, Montréal",
+    _shows = {en:{},fr:{}};
 
 	for(var i = 0;i<films.length;i++){
 	  var isFilm = films[i].children[1].children[0].className === "titre";
@@ -14,7 +16,7 @@ beaubien.js = function(){
 			shows,
 			nom = infos.children[0].children[0].children[0],
 			_nom = "",
-			_times = {},
+			_times = [],
 			lang = "?";
 			
 		//get name
@@ -41,32 +43,35 @@ beaubien.js = function(){
 		
 		// showtimes by day
 		for(var j = 0; j<shows.children.length;j++){
-		  var date = shows.children[j].children[0].textContent,
-				time = shows.children[j].children[1].textContent.split(",");
-		  
-		  for(var k = 0; k<time.length;k++){
-			time[k] = time[k].replace(/\s+/g,' ').trim();
-		  }
-		   
-		  _times[date] = time;
+		  var date = shows.children[j].children[0].textContent.split(" ").slice(1).join(" "),
+				time = shows.children[j].children[1].textContent.replace(/\s+/g,' ').trim().split(",");
+		   createFilm(_nom, lang, date, time);
+			console.log(date)
 		}
 		
-		if(lang === "bi"){
-			var film = {name:_nom, show:_times, lang: "fr"}
-		  
-			_films.push(film);
-			lang = "en";
-		}
 		
-		var film = {name:_nom, show:_times, lang: lang}
-		
-		_films.push(film);
 	  }
 	}
 	
-	cinema.films = _films;
+	cinema.shows = _shows;
 	cinema.adress = _adress
 	return cinema;
+  //console.log(cinema);
+function createFilm(name, lang, date, time){
+	if(lang === "bi"){
+		if(typeof _shows["fr"][date] !== "object") _shows["fr"][date] = []
+		if(typeof _shows["en"][date] !== "object") _shows["en"][date] = []
+		var film = {name:name, time: time}
+		_shows["fr"][date].push(film);
+		lang = "en";
+	} else {
+		if(typeof _shows[lang][date] !== "object") _shows[lang][date] = []
+	}
+	
+	var film = {name:name, time:time}
+	
+	_shows[lang][date].push(film);
+}
 }
 
 beaubien.liens = ["http://cinemabeaubien.com/fr/alaffiche.aspx", beaubien.js];
