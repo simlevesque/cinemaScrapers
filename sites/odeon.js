@@ -54,18 +54,48 @@ odeon.start = function(){
 					}, function (result) {
 						
 						var today = Object.keys(result.shows)[0],
-							todayShows = result.shows[today];
+							todayShows = result.shows[today],
+							_showz = {en:{},fr:{}};
+							
+						_showz.en[today] = [];
+						_showz.fr[today] = [];
 						
-						for(var i = 0;i<todayShows.length;i++){
-							console.log(todayShows[i]);
+						for(var i = 0, j = 0;i<todayShows.length;i++){
+							var leShow = todayShows[i];
+							
+							if(lang === "bi"){
+								detectLang(leShow.name, function(cinema, movie, language){
+									if(language === "fr") _showz.fr[today].push(leShow)
+									else _showz.en[today].push(leShow)
+									j++;
+									if(j===todayShows.length) onEnd(result, _showz)
+								});
+							} else {
+								if(lang === "fr"){
+									if(verifyFrench(leShow.name) === "fr") _showz.fr[today].push(leShow)
+									else _showz.en[today].push(leShow)
+								}
+								if(lang === "en"){
+									if(verifyEnglish(leShow.name) === "fr") _showz.fr[today].push(leShow)
+									else _showz.en[today].push(leShow)
+								}
+								j++;
+								if(j===todayShows.length) onEnd(result, _showz)
+							}
+							
+							
 						}
-						
-						odeon.emit("update",  result);
-						setTimeout(nextOpen,1000)
 					});
 			});
 			}
-
+			
+			function onEnd(result, _showz){
+				delete result.shows;
+				result.shows = _showz;
+				odeon.emit("update",  result);
+				setTimeout(nextOpen,1000);
+			}
+			
 			function nextOpen(){
 				var item = shifting.shift();
 				if(typeof item === "undefined") {}
@@ -77,6 +107,8 @@ odeon.start = function(){
 	});
 
 }
+
+
 
 function verifyFrench(mov){
 	var language = "fr";
@@ -92,7 +124,7 @@ function verifyEnglish(mov){
 
 
 
-function detectLang(cinema, movie, callback){
+function detectLang(movie, callback){
 	guessLanguage.detect(movie, function(language) {
 		if(language !== "fr" && language !== "en") {
 			//this needs some work
@@ -124,7 +156,7 @@ function detectLang(cinema, movie, callback){
 				language = "en"
 			}
 		}
-		callback(cinema, movie, language);
+		callback(movie, language);
 	});
 }
 
