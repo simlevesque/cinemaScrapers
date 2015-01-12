@@ -5,7 +5,8 @@ cinestarz.js1 = function(){
 		_cinema = {},
 		_cinemaName = "Cinéstarz Langelier",
 		_cinemaAdress = "7305, Boulevard Langelier, Montréal",
-		_films = [];
+    _shows = {fr: {}, en: {}},
+ 		week = getCinemaWeek();
 
 	for(var i = 0; i<films.length;i++){
 		var film = films[i],
@@ -23,26 +24,66 @@ cinestarz.js1 = function(){
 				if(parseInt(child.textContent)){
 					times.push(child.textContent); 
 				} else {
-					dates.push(child.textContent); 
+					var theseDates = child.textContent.split(", "),
+							fixedDates = [];
+					for(var k = 0; k< theseDates.length;k++){
+						var fixed = fixDates(theseDates[k]);
+						fixedDates.push(fixed);
+					}
+					dates.push(fixedDates); 
 				}
 			}
 		}
 	  
 		for(var j = 0;j<dates.length;j++){
-			_horaire[dates[j]] = times[j]
+			createFilm(filmname, dates[j], times[j]);
 		}
-	  
-		_film.shows = _horaire;
-		_film.name = filmname;
-		_film.lang = "fr";
-		_films.push(_film);
+	 
 	}
 
-	_cinema.films = _films;
+	_cinema.shows = _shows;
 	_cinema.name = _cinemaName;
 	_cinema.adress = _cinemaAdress;
 
-	return _cinema;
+	return _shows.fr;
+    //console.log();
+
+	function getCinemaWeek(){
+	  var curr = new Date; // get current date
+		var week = [];
+	  var friday = curr.getDate() - curr.getDay() - 2;
+		var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+		var month = months[curr.getMonth()];
+		for(var i = 0;i<7;i++){
+			week.push(friday + i + " " + month);
+		}
+	  return week;
+	}
+
+	function fixDates(theDate){
+		var days = ['Friday','Saturday','Sunday','Monday','Tuesday','Wednesday','Thursday'];
+		for(var i = 0;i<days.length;i++){
+			if(theDate.indexOf(days[i]) !== -1){
+				return week[i];
+			}	
+		}
+		return "n";
+	}
+
+	function createFilm(name,date,time){
+		var aFilm = {};
+		aFilm.name = name;
+		aFilm.time = time;
+		for(var i = 0;i<date.length;i++){
+			var theDate = date[i];
+			if(typeof _shows.fr[theDate] !== "object"){
+				_shows.fr[theDate] = [];
+			}
+			if(!!aFilm){_shows.fr[theDate].push(aFilm)}
+			
+		}
+	}
 }
 
 cinestarz.js2 = function(){
@@ -50,7 +91,8 @@ cinestarz.js2 = function(){
 		_cinema = {},
 		_cinemaName = "Cinéstarz Côte-Des-Neiges",
 		_cinemaAdress = "6700, Cote des Neiges #300 AB, Montréal",
-		_films = [];
+    _shows = {fr: {}, en: {}},
+ 		week = getCinemaWeek();
 
 	for(var i = 0; i<films.length;i++){
 		var film = films[i],
@@ -68,26 +110,65 @@ cinestarz.js2 = function(){
 				if(parseInt(child.textContent)){
 					times.push(child.textContent); 
 				} else {
-					dates.push(child.textContent); 
+					var theseDates = child.textContent.split(", "),
+							fixedDates = [];
+					for(var k = 0; k< theseDates.length;k++){
+						var fixed = fixDates(theseDates[k]);
+						fixedDates.push(fixed);
+					}
+					dates.push(fixedDates); 
 				}
 			}
 		}
 	  
 		for(var j = 0;j<dates.length;j++){
-			_horaire[dates[j]] = times[j]
+			createFilm(filmname, dates[j], times[j]);
 		}
-	  
-		_film.shows = _horaire;
-		_film.name = filmname;
-		_film.lang = "en";
-		_films.push(_film);
 	}
 
-	_cinema.films = _films;
+	_cinema.shows = _shows;
 	_cinema.name = _cinemaName;
 	_cinema.adress = _cinemaAdress;
 
-	return _cinema;
+	return _shows.en;
+	//console.log(_cinema);
+
+function getCinemaWeek(){
+  var curr = new Date; // get current date
+	var week = [];
+  var friday = curr.getDate() - curr.getDay() - 2;
+	var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+	var month = months[curr.getMonth()];
+	
+	for(var i = 0;i<7;i++){
+		week.push(friday + i + " " + month);
+	}
+  return week;
+}
+
+function fixDates(theDate){
+	var days = ['Friday','Saturday','Sunday','Monday','Tuesday','Wednesday','Thursday'];
+	for(var i = 0;i<days.length;i++){
+		if(theDate.indexOf(days[i]) !== -1){
+			return week[i];
+		}	
+	}
+	return "n";
+}
+
+function createFilm(name,date,time){
+	var film = {};
+	film.name = name;
+	film.time = time;
+	for(var i = 0;i<date.length;i++){
+		var theDate = date[i];
+		if(typeof _shows.en[theDate] !== "object"){
+			_shows.en[theDate] = [];
+		}
+		_shows.en[theDate].push(film);
+	}
+}
 }
 
 

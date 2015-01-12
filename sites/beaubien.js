@@ -2,7 +2,7 @@ var beaubien = {};
 
 beaubien.js = function(){
 	var films = document.getElementsByClassName("unFilm"),
-		cinema = {name:"beaubien"},
+		cinema = {name:"Cinéma Beaubien"},
 		_films = [],
 		_adress = "2396, rue Beaubien Est, Montréal",
     _shows = {en:{},fr:{}};

@@ -23,7 +23,10 @@ indie.start = function(){
 				page.open(item[0], function (status) {
 					page.evaluate(item[1], function (result) {
 						indie.emit("update",  result);
-						setTimeout(nextOpen,1000)
+						
+						console.log(result);
+						
+						setTimeout(nextOpen,1000);
 					});
 				});
 			}

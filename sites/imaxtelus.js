@@ -3,7 +3,7 @@ var imaxtelus = {};
 imaxtelus.js = function(){
 
 	var horaire = document.getElementById("IMAX-Horaire").children[0].children,
-		_cinemaName = "IMAX Telus",
+		_cinemaName = "Cinéma IMAX Telus",
 		_cinemaAdress = "2, Rue de la Commune Ouest, Montréal",
 		_films = [],
 		_cinema = {},
@@ -28,7 +28,7 @@ imaxtelus.js = function(){
 		if(lang !== "error") createFilm(nom, lang, time);
 	}
 
-	_cinema.show = _shows;
+	_cinema.shows = _shows;
 	_cinema.name = _cinemaName;
 	_cinema.adress = _cinemaAdress;
 	return _cinema;
