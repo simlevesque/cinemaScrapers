@@ -33,7 +33,7 @@ function scraperEnd(){
 }
 
 function onUpdate(){
-	//console.log(quickResults());
+	console.log(quickResults());
 }
 
 

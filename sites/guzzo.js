@@ -143,7 +143,7 @@ guzzo.start = function(){
 						}
 					}, function (result) {
 						guzzo.emit("update",  result);
-						setTimeout(nextOpen,750)
+						setTimeout(nextOpen,1000)
 					});
 				});
 			}

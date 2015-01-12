@@ -93,7 +93,7 @@ odeon.start = function(){
 				delete result.shows;
 				result.shows = _showz;
 				odeon.emit("update",  result);
-				setTimeout(nextOpen,750);
+				setTimeout(nextOpen,1000);
 			}
 			
 			function nextOpen(){
