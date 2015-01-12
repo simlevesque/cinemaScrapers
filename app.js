@@ -33,7 +33,7 @@ function scraperEnd(){
 }
 
 function onUpdate(){
-	console.log(quickResults());
+	//console.log(quickResults());
 }
 
 
@@ -70,24 +70,52 @@ function init(){
 	guzzo.start();
 	indie.start();
 	
-	var bar = new ProgressBar('Mise à jour des données en cours [:bar\x1b[0m] :percent :eta', { complete: '\x1b[32m|', incomplete: ' ', width: 60, total: quickResults().length+1});
+	var bar = new ProgressBar('Mise à jour des données en cours [:bar\x1b[0m] :percent', { complete: '\x1b[32m|', incomplete: ' ', width: 60, total: quickResults().length+1});
 	bar.tick();
 }
 
 function today(){
 	var scrapers = Object.keys(results),
-		content = {fr:[], en:[]};
-	
+		content = {fr:[], en:[]},
+		films = [];
+	var todayDate = new Date();
+	todayDate = todayDate.getDate();
 	for(var i = 0;i<scrapers.length;i++){
 		var pages = results[scrapers[i]],
 		array = Object.keys(pages);
 		for(var j = 0;j<array.length;j++){
 			var pages = results[scrapers[i]][array[j]];
-			console.log(pages.shows.fr)
-			
+			var frenchDates = pages.shows.fr,
+				datesKeys = Object.keys(frenchDates);
+			for(var k = 0;k<datesKeys.length;k++){
+				if(datesKeys[k].indexOf(todayDate) !== -1){
+					var dayShows = frenchDates[datesKeys[k]];
+					if(dayShows !== []){
+						for(var l = 0;l<dayShows.length;l++){
+							films.push(dayShows[l].name);
+						}
+					}
+				}
+			}			
 		}
 	}
 	
+	var uniq = uniq_fast(films);
 	
-	return "pas encore"
+	return films
+}
+
+function uniq_fast(a) {
+    var seen = {};
+    var out = [];
+    var len = a.length;
+    var j = 0;
+    for(var i = 0; i < len; i++) {
+         var item = a[i];
+         if(seen[item] !== 1) {
+               seen[item] = 1;
+               out[j++] = item;
+         }
+    }
+    return out;
 }
