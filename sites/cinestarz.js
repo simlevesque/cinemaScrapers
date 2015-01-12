@@ -45,7 +45,7 @@ cinestarz.js1 = function(){
 	_cinema.name = _cinemaName;
 	_cinema.adress = _cinemaAdress;
 
-	return _shows.fr;
+	return _cinema;
     //console.log();
 
 	function getCinemaWeek(){
@@ -80,7 +80,7 @@ cinestarz.js1 = function(){
 			if(typeof _shows.fr[theDate] !== "object"){
 				_shows.fr[theDate] = [];
 			}
-			if(!!aFilm){_shows.fr[theDate].push(aFilm)}
+			_shows.fr[theDate].push({name:name,time:time})
 			
 		}
 	}
@@ -92,7 +92,8 @@ cinestarz.js2 = function(){
 		_cinemaName = "Cinéstarz Côte-Des-Neiges",
 		_cinemaAdress = "6700, Cote des Neiges #300 AB, Montréal",
     _shows = {fr: {}, en: {}},
- 		week = getCinemaWeek();
+ 		week = getCinemaWeek(),
+		bb = [];
 
 	for(var i = 0; i<films.length;i++){
 		var film = films[i],
@@ -130,7 +131,7 @@ cinestarz.js2 = function(){
 	_cinema.name = _cinemaName;
 	_cinema.adress = _cinemaAdress;
 
-	return _shows.en;
+	return _cinema;
 	//console.log(_cinema);
 
 function getCinemaWeek(){
@@ -158,15 +159,15 @@ function fixDates(theDate){
 }
 
 function createFilm(name,date,time){
-	var film = {};
-	film.name = name;
-	film.time = time;
+	var aFilm = {};
+	aFilm.name = name;
+	aFilm.time = time;
 	for(var i = 0;i<date.length;i++){
 		var theDate = date[i];
 		if(typeof _shows.en[theDate] !== "object"){
 			_shows.en[theDate] = [];
 		}
-		_shows.en[theDate].push(film);
+		_shows.en[theDate].push({name:name,time:time});
 	}
 }
 }

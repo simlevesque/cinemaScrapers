@@ -16,7 +16,7 @@ var odeon = require("./sites/odeon"),
 		return quick;
 	},
 	nbScraper = 0
-	everyScraperType = 1;
+	everyScraperType = 3;
 	
 console.log("CinémaScrapers 2015 et +");
 init();
@@ -27,7 +27,7 @@ function scraperEnd(){
 	if(nbScraper === everyScraperType){
 		fs.writeFile('result.json', JSON.stringify(results), function (err) {
 		  if (err) return console.log(err);
-		  //main();
+		  main();
 		});
 	}
 }
@@ -66,11 +66,11 @@ function init(){
 		bar.tick();
 	});
 
-	//odeon.start();
-	//guzzo.start();
+	odeon.start();
+	guzzo.start();
 	indie.start();
 	
-	var bar = new ProgressBar('Mise à jour des données en cours [:bar\x1b[0m] :percent :eta', { complete: '\x1b[32m|', incomplete: ' ', width: 60, total: /*quickResults().length*/5+1});
+	var bar = new ProgressBar('Mise à jour des données en cours [:bar\x1b[0m] :percent :eta', { complete: '\x1b[32m|', incomplete: ' ', width: 60, total: quickResults().length+1});
 	bar.tick();
 }
 
