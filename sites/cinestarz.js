@@ -44,7 +44,7 @@ cinestarz.js1 = function(){
 	_cinema.shows = _shows;
 	_cinema.name = _cinemaName;
 	_cinema.adress = _cinemaAdress;
-
+	_cinema.scraper = "indie";
 	return _cinema;
     //console.log();
 
@@ -130,7 +130,8 @@ cinestarz.js2 = function(){
 	_cinema.shows = _shows;
 	_cinema.name = _cinemaName;
 	_cinema.adress = _cinemaAdress;
-
+	_cinema.scraper = "indie";
+	
 	return _cinema;
 	//console.log(_cinema);
 

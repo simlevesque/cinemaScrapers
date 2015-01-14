@@ -6,7 +6,7 @@ beaubien.js = function(){
 		_films = [],
 		_adress = "2396, rue Beaubien Est, Montréal",
     _shows = {en:{},fr:{}};
-
+	cinema.scraper = "indie";
 	for(var i = 0;i<films.length;i++){
 	  var isFilm = films[i].children[1].children[0].className === "titre";
 	  

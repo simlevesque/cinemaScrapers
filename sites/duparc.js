@@ -9,6 +9,7 @@ duparc.js = function(){
 	_cinema.name = _cinemaName;
 	_cinema.adress = _cinemaAdress;
 	_cinema.shows = _horaire;
+	_cinema.scraper = "indie";
 	_horaire["en"] = {};
 	_horaire["fr"] = {};
 

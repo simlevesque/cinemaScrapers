@@ -7,6 +7,7 @@ var phantom = require("phantom"),
 	pages = [],
 	
 	indie = new EventEmitter();
+	indie.name = "indie";
 	
 	pages.push(beaubien.liens);
 	pages.push(imaxtelus.liens);

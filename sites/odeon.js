@@ -6,7 +6,10 @@ var phantom = require("phantom"),
 	shifting = pages.slice(0),
 	odeon = new EventEmitter();
 	
+	
+	odeon.name = "odeon";
 	odeon.length = pages.length;
+	
 odeon.start = function(){
 	phantom.create(function(ph){
 		ph.createPage(function (page) {
@@ -48,7 +51,7 @@ odeon.start = function(){
 							_shows[currentDate].push(film);
 						}
 						
-						var cinema = {name:_nomDuCinema,adress:_adresseDuCinema, shows:_shows};
+						var cinema = {name:_nomDuCinema,adress:_adresseDuCinema, shows:_shows, scraper:"odeon"};
 						
 						return cinema;
 					}, function (result) {

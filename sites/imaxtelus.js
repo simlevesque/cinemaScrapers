@@ -13,7 +13,7 @@ imaxtelus.js = function(){
 		_today = [_day, _month].join(" ");
 		_shows["en"][_today] = [];
 		_shows["fr"][_today] = [];
-
+	
 	for(var i = 0;i<horaire.length;i++){
 		var time = horaire[i].children[0].textContent,
 			nom = horaire[i].children[1].textContent.split("(")[0].replace(/\s+/g,' ').trim(),
@@ -31,6 +31,7 @@ imaxtelus.js = function(){
 	_cinema.shows = _shows;
 	_cinema.name = _cinemaName;
 	_cinema.adress = _cinemaAdress;
+	_cinema.scraper = "indie";
 	return _cinema;
 
 function createFilm(name, lang, time){
