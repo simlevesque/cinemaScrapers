@@ -3,7 +3,7 @@ cinemaScrapers
 
 from websites to a REST API
 
-supporte presentement 27 cinemas dans la région montréalaise :)
+supporte présentement 28 cinémas dans la région montréalaise :)
 
 - Guzzo
     - 01 Mega-Plex Taschereau 18 (IMAX)
