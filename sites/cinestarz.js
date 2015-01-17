@@ -174,7 +174,7 @@ function createFilm(name,date,time){
 }
 
 
-cinestarz.liens1 = ["http://cinestarz.ca/now-playing/?thr=lan", cinestarz.js1, "fr"];
-cinestarz.liens2 = ["http://cinestarz.ca/now-playing/?thr=cote", cinestarz.js2, "en"];
+cinestarz.liens1 = ["http://cinestarz.ca/now-playing/?thr=lan", cinestarz.js1, "Cinéstarz Langelier"];
+cinestarz.liens2 = ["http://cinestarz.ca/now-playing/?thr=cote", cinestarz.js2, "Cinéstarz Côte-Des-Neiges"];
 
 module.exports = cinestarz;

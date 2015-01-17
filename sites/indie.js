@@ -3,6 +3,7 @@ var phantom = require("phantom"),
 	imaxtelus = require("./imaxtelus.js"),
 	cinestarz = require("./cinestarz.js"),
 	duparc = require("./duparc.js"),
+	excentris = require("./excentris.js"),
 	EventEmitter = require('events').EventEmitter,
 	pages = [],
 	
@@ -14,16 +15,19 @@ var phantom = require("phantom"),
 	pages.push(cinestarz.liens1);
 	pages.push(cinestarz.liens2);
 	pages.push(duparc.liens);
+	pages.push(excentris.liens);
 	
 	shifting = pages.slice(0);
 	indie.length = pages.length;
+	
 indie.start = function(){
 	phantom.create(function(ph){
 		ph.createPage(function (page) {
 			function handleOpen(item){
 				page.open(item[0], function (status) {
 					page.evaluate(item[1], function (result) {
-						indie.emit("update",  result);
+						if (!!result) indie.emit("update",  result);
+						else indie.emit("error",  item[2]);
 						setTimeout(nextOpen,1000);
 					});
 				});

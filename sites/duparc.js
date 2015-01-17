@@ -99,6 +99,6 @@ duparc.js = function(){
 }
 
 
-duparc.liens = ["http://www.cinemaduparc.com/affiche.php", duparc.js];
+duparc.liens = ["http://www.cinemaduparc.com/affiche.php", duparc.js, "Cinéma du Parc"];
 
 module.exports = duparc;

@@ -1,7 +1,6 @@
 var imaxtelus = {};
 
 imaxtelus.js = function(){
-
 	var horaire = document.getElementById("IMAX-Horaire").children[0].children,
 		_cinemaName = "Cinéma IMAX Telus",
 		_cinemaAdress = "2, Rue de la Commune Ouest, Montréal",
@@ -34,12 +33,12 @@ imaxtelus.js = function(){
 	_cinema.scraper = "indie";
 	return _cinema;
 
-function createFilm(name, lang, time){
-	var _film = {name:name, time:time};
-	_shows[lang][_today].push(_film);
-}
+	function createFilm(name, lang, time){
+		var _film = {name:name, time:time};
+		_shows[lang][_today].push(_film);
+	}
 }
 
-imaxtelus.liens = ["http://www.centredessciencesdemontreal.com/imax-telus/cinema-imax-telus.html", imaxtelus.js, "fr"];
+imaxtelus.liens = ["http://www.centredessciencesdemontreal.com/imax-telus/cinema-imax-telus.html", imaxtelus.js, "Cinéma IMAX Telus"];
 
 module.exports = imaxtelus;

@@ -2,7 +2,7 @@ var allocine = require('allocine-api'),
 	omdb = require('omdb'),
 	fs = require('fs'),
 	ProgressBar = require('progress'),
-	results = {"guzzo":{},"odeon":{},"indie":{}},
+	results = {/*"guzzo":{},"odeon":{},*/"indie":{}},
 	scraperz = JSON.parse(JSON.stringify(results)),
 	concrete = {en:{},fr:{}},
 	quickResults = function(){
@@ -18,20 +18,20 @@ var allocine = require('allocine-api'),
 		return quick;
 	},
 	scrapingProgress = 0;
-	everyScraperType = Object.keys(results).length;
+	everyScraperType = Object.keys(results).length,
+	errors = 0;
 	
-	
-	//Debug vars
-	var disableLoadingbar = false;
 init();
-
 
 function scraperEnd(){
 	scrapingProgress++;
 	if(scrapingProgress === everyScraperType){
 		fs.writeFile('result.json', JSON.stringify(results), function (err) {
-		  if (err) return console.log(err);
-		  main();
+			if(errors !== 0){
+				console.log("WARNING : There were " + errors + " errors during the scraping process");
+			}
+			if (err) return console.log(err);
+			main();
 		});
 	}
 }
@@ -39,7 +39,6 @@ function scraperEnd(){
 function onUpdate(){
 	//console.log(quickResults());
 }
-
 
 function main(){
 	console.log("CinémaScrapers Init Done");
@@ -49,23 +48,23 @@ function main(){
 }
 
 function init(){
+	console.log("CinémaScrapers Init Start");
+	
 	//Loading scrapers
 	for(var i = 0;i<Object.keys(scraperz).length;i++){
 		var thisOne = Object.keys(scraperz)[i];
 		scraperz[thisOne] = require("./sites/"+thisOne);
 		scraperz[thisOne].start();
-		scraperz[thisOne].on("update", function(result){
-			if(typeof results[thisOne] !== "object") results[thisOne] = {};
-			results[result.scraper][result.name] = result;
-			if(Object.keys(results[result.scraper]).length === scraperz[result.scraper].length) scraperEnd();
-			onUpdate();
-			bar.tick();
-		});	
 	}
 	
-	console.log("CinémaScrapers Init Start");
-	var bar = new ProgressBar('Mise à jour des données en cours [:bar\x1b[0m] :percent', { complete: '\x1b[32m|', incomplete: ' ', width: 60, total: quickResults().length+1});
+	var bar = new ProgressBar('Mise à jour des données en cours [:bar\x1b[0m] :percent | il reste environ :eta secondes', { complete: '\x1b[32m|', incomplete: ' ', width: 60, total: quickResults().length+1});
 	bar.tick();
+	
+	// Setting update triggers
+	for(var i = 0;i<Object.keys(scraperz).length;i++){
+		var thisOne = Object.keys(scraperz)[i];
+		updateTrigger(thisOne, bar);
+	}
 }
 
 function today(){
@@ -81,21 +80,23 @@ function today(){
 			array = Object.keys(pages);
 		
 		for(var j = 0;j<array.length;j++){
-			var pages = results[scrapers[i]][array[j]],
-				frenchDates = pages.shows.fr,
+			var page = results[scrapers[i]][array[j]];
+			if(page !== "error"){
+				frenchDates = page.shows.fr,
 				datesKeys = Object.keys(frenchDates);
-				
-			for(var k = 0;k<datesKeys.length;k++){
-				if(datesKeys[k].indexOf(todayDate) !== -1){
-					var dayShows = frenchDates[datesKeys[k]];
 					
-					if(dayShows !== []){
-						for(var l = 0;l<dayShows.length;l++){
-							films.push(dayShows[l].name.toProperCase());
+				for(var k = 0;k<datesKeys.length;k++){
+					if(datesKeys[k].indexOf(todayDate) !== -1){
+						var dayShows = frenchDates[datesKeys[k]];
+						
+						if(dayShows !== []){
+							for(var l = 0;l<dayShows.length;l++){
+								films.push(dayShows[l].name.toProperCase());
+							}
 						}
 					}
 				}
-			}			
+			}
 		}
 	}
 	
@@ -124,3 +125,24 @@ function uniq_fast(a) {
 String.prototype.toProperCase = function () {
     return this.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 };
+
+function addResult(scraper, name, content) {
+	if(typeof results[scraper] !== "object") results[scraper] = {};
+	results[scraper][name] = content;
+}
+
+function updateTrigger(thisScraper, bar) {
+	scraperz[thisScraper].on("update", function(result){
+		addResult(result.scraper, result.name, result);
+		if(Object.keys(results[result.scraper]).length === scraperz[thisScraper].length) scraperEnd();
+		onUpdate();
+		bar.tick();
+	});	
+	scraperz[thisScraper].on("error", function(which){
+		errors++;
+		addResult(thisScraper, which, "error");
+		if(Object.keys(results[thisScraper]).length === scraperz[thisScraper].length) scraperEnd();
+		onUpdate();
+		bar.tick();
+	});	
+}

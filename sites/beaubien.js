@@ -22,7 +22,7 @@ beaubien.js = function(){
 		for(var j = 0; j<nom.children.length;j++){
 		  var child = nom.children[j];
 		  
-		  if(child.tagName === 'CUFON') _nom = _nom + child.textContent;
+		if(child.tagName === 'CUFON') _nom = _nom + child.textContent;
 		  if(child.classList.toString()=== 'date') { 
 			var tmpLang = child.textContent;
 			
@@ -55,7 +55,7 @@ beaubien.js = function(){
 	cinema.shows = _shows;
 	cinema.adress = _adress
 	return cinema;
-  //console.log(cinema);
+	//console.log(cinema);
 function createFilm(name, lang, date, time){
 	if(lang === "bi"){
 		if(typeof _shows["fr"][date] !== "object") _shows["fr"][date] = []
@@ -73,6 +73,6 @@ function createFilm(name, lang, date, time){
 }
 }
 
-beaubien.liens = ["http://cinemabeaubien.com/fr/alaffiche.aspx", beaubien.js];
+beaubien.liens = ["http://cinemabeaubien.com/fr/alaffiche.aspx", beaubien.js, "Cinéma Beaubien"];
 
 module.exports = beaubien;

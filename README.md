@@ -37,6 +37,7 @@ supporte presentement 27 cinemas dans la région montréalaise :)
     - 03 Cinéstarz Langelier
     - 04 Cinéstarz Côte-Des-Neiges
     - 05 Cinéma du Parc
+    - 06 Cinéma Excentris
 
 dependencies : 
 guesslanguage, allocine-api, omdb, cookie-jar, qs, oauth-sign, aws-sign, hawk, http-signature, node-uuid, mime, tunnel-agent, json-stringify-safe, forever-agent, form-data
